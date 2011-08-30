@@ -1,8 +1,9 @@
 <?php
 
-/* Router                                 */
-/* by Ben Crowder <ben.crowder@gmail.com> */
-/* http://bencrowder.net/coding/router    */
+/* Router                                     */
+/* by Ben Crowder <ben.crowder@gmail.com>     */
+/* http://bencrowder.net/coding/router        */
+/* Modified by Chad Hansen <chadgh@gmail.com> */
 
 class Router {
 	public static function route($url, $routes, $defaultHandler) {
@@ -19,9 +20,15 @@ class Router {
 
 		// call the default handler
 		if (!$found) {
-			call_user_func($defaultHandler);
+			call_user_func($defaultHandler, $url);
 		}
+	} 
+
+	public static function routeURI($routes, $defaultHandler) {
+		$url = $_SERVER['REQUEST_URI'];
+		self::route($url, $routes, $defaultHandler);
 	}
+
 }
 
 ?>
