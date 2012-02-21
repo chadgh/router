@@ -20,37 +20,22 @@ Router is a (very) small PHP library for doing URL routing.
 
 Usage looks like this:
 
-	$url = $_SERVER["REQUEST_URI"];
-
 	$routes = array(
 		'#^/app/([^/]+)/?$#' => 'appHandler',
 		'#^/(\d\d\d\d)/(\d\d)/(\d\d)/([^/]+)/?$#' => 'blogHandler'
 	);
 
-We've set up the array of handlers, using `#` as our regex delimiter so we don't have to escape forward slashes. The value part of each pair is the name of the handler function you want called when the associated regex matches the URL. You can use plain function names or make them static functions in a class.
+We've set up the array of handlers, using `#` as our regex delimiter so we don't have to escape forward slashes. The value part of each pair is the name of the handler function you want called when the associated regex matches the URL. You can use global function names, static methods in a class, or pass in an array with the object and method to be called. For example:
 
-	Router::route($url, $routes, 'defaultHandler');
+	$routes = array(
+		'#^/app/([^/]+)/?$#' => array('Handler', 'appHandler'),
+		'#^/(\d\d\d\d)/(\d\d)/(\d\d)/([^/]+)/?$#' => 'blogHandler'
+	);
 
-This does the routing. You pass in the string to parse (the URL), the array of routes, and the name of the default handler.
+The instantiated objects can also be passed a third element of the array with will be used as the parameters to be passed to the constructor. Previously instantiated object can also be passed in.
 
-	function appHandler($args) {
-		echo $args[0];
-	}
+	$router->route($routes);
 
-	function blogHandler($args) {
-		$year = $args[0];
-		$month = $args[1];
-		$day = $args[2];
-		$slug = $args[3];
-
-		echo "Blog post date: $month/$day/$year<br>";
-		echo "Slug: $slug";
-	}
-
-	function defaultHandler() {
-		echo "Default";
-	}
-
-And these are the (very simplistic) handlers.
+This does the routing. You pass in the array of routes and the matching method/function is called (or an exception is thrown).
 
 A working example is in the included `index.php` file.

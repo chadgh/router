@@ -5,9 +5,11 @@
 
 class Router {
 	private $defaultHandler;
+	private $debug;
 
 	public function Router($defaultHandler='', $debug=false) {
 		$this->setDefaultHandler($defaultHandler);
+		$this->setDebug($debug);
 	}
 
 	public function route($routes, $url='') {
@@ -63,6 +65,14 @@ class Router {
 
 	public function setDefaultHandler($handler) {
 		$this->defaultHandler = $handler;
+	}
+
+	public function getDebug() {
+		return $this->debug;
+	}
+
+	public function setDebug($debug) {
+		$this->debug = $debug;
 	}
 }
 ?>
